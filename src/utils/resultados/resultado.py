@@ -1,6 +1,10 @@
+from abc import ABC, abstractmethod
 import time
 
-class Resultado:
+import pandas as pd
+import os
+
+class Resultado(ABC):
     def __init__(self):
         self.sucesso = False
         self.custo = 0
@@ -30,3 +34,35 @@ class Resultado:
     def finish(self):
         self.fim = time.perf_counter()
         self.tempo = self.fim - self.inicio
+    
+    def _getResultado(self): 
+        return {
+            "sucesso": [self.sucesso],
+            "custo": [self.custo],
+            "passos": [self.passos],
+            "expandidos": [self.expandidos],
+            "fronteira": [self.fronteira],
+            "tempo_segundos": [self.tempo],
+        }
+
+    def _salvaResultado(self, file, additionalData):
+        dados = self._getResultado() | additionalData
+
+        df_dados = pd.DataFrame(dados, index=[0])
+
+        pasta = os.path.dirname(file)
+        if pasta and not os.path.exists(pasta):
+            os.makedirs(pasta)
+
+        if os.path.exists(file):
+            df_atual = pd.read_csv(file)
+            df_concat = pd.concat([df_atual, df_dados], ignore_index=True)
+        else:
+            df_concat = df_dados
+
+        df_concat.to_csv(file, index=False)
+        
+
+    @abstractmethod
+    def salvarResultado():
+        pass
