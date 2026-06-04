@@ -1,6 +1,6 @@
 import heapq
-from utils.auxiliar_busca import get_vizinhos
-from utils.resultados.resultado_ucs import ResultadoUCS
+from src.utils.auxiliar_busca import get_vizinhos
+from src.utils.resultados.resultado_ucs import ResultadoUCS
 
 def ucs(grid, inicio, objetivo):
     resultado = ResultadoUCS()

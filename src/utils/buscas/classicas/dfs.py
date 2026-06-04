@@ -1,5 +1,5 @@
-from utils.auxiliar_busca import get_vizinhos
-from utils.resultados.resultado_dfs import ResultadoDFS
+from src.utils.auxiliar_busca import get_vizinhos
+from src.utils.resultados.resultado_dfs import ResultadoDFS
 
 def dfs(grid, inicio, objetivo):
     resultado = ResultadoDFS()

@@ -1,6 +1,6 @@
 from collections import deque
-from utils.auxiliar_busca import get_vizinhos
-from utils.resultados.resultado_bfs import ResultadoBFS
+from src.utils.auxiliar_busca import get_vizinhos
+from src.utils.resultados.resultado_bfs import ResultadoBFS
 
 def bfs(grid, inicio, objetivo):
     resultado = ResultadoBFS()

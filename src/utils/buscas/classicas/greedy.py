@@ -1,6 +1,6 @@
 import heapq
-from utils.auxiliar_busca import get_vizinhos, heuristica_manhattan
-from utils.resultados.resultado_guloso import ResultadoGuloso
+from src.utils.auxiliar_busca import get_vizinhos, heuristica_manhattan
+from src.utils.resultados.resultado_guloso import ResultadoGuloso
 
 def busca_gulosa(grid, inicio, objetivo):
     resultado = ResultadoGuloso()

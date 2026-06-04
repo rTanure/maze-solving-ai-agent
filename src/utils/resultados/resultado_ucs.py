@@ -1,4 +1,4 @@
-from resultado import Resultado
+from src.utils.resultados.resultado import Resultado
 import pandas as pd
 import os
 
