@@ -1,5 +1,4 @@
 import questionary
-from src.utils.gerar_labirintos import gerar_labirinto
 from src.utils.validadores import *
 from src.utils.os_utils import limpar_terminal
 from src.menus.menu_gerador import menu_gerar_labirintos_lotes

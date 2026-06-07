@@ -44,6 +44,7 @@ class Resultado(ABC):
             "expandidos": [self.expandidos],
             "fronteira": [self.fronteira],
             "tempo_segundos": [self.tempo],
+            "caminho": [self.caminho]
         }
 
     def _salvaResultado(self, file, additionalData):

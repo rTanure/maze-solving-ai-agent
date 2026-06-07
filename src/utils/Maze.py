@@ -1,56 +1,153 @@
-from src.utils.gerar_labirintos import gerar_labirinto
 from src.utils.get_dataframe import get_dataframe
 import pandas as pd
 import uuid
 import os
+import numpy as np
+import random
 
 class Maze:
     # Se o ID e o maze não forem passados, ele criará um novo labirinto com as informações restantes.
-    def __init__(self, width, length, collectibles, cicles, maze = None, id = None):
+    def __init__(self, width, length, collectibles, cicles, maze, start, end, id = None):
         self.id = id if id else uuid.uuid4()
-        self.maze = maze if maze else gerar_labirinto(width, length, collectibles, cicles)
+        self.maze = maze
         self.width = width
         self.length = length
         self.collectibles = collectibles
         self.cicles = cicles
+        self.start = start
+        self.end = end
 
-    def save(self):
+    @classmethod
+    def save_all(cls, mazes: list['Maze']) -> bool:
+        """
+        Recebe uma lista de instâncias de Maze, valida duplicatas,
+        salva os arquivos .txt individuais e atualiza o CSV em lote.
+        """
+        if not mazes:
+            print("Nenhum labirinto fornecido para salvar.")
+            return False
+
         caminho_csv = "datasets/mazes.csv"
         df = get_dataframe(caminho_csv)
-
-        if not df.empty and "id" in df.columns and self.id is not None:
-            if self.id in df["id"].values:
-                print(f"Erro: Já existe um labirinto cadastrado com o ID '{self.id}'.")
-                return False
-
-        # --- NOVA PARTE: SALVAR O TXT INDIVIDUAL ---
+        
+        # Coleta IDs existentes para validação ágil
+        ids_existentes = set(df["id"].astype(str).values) if not df.empty and "id" in df.columns else set()
+        
+        novas_linhas = []
         pasta_mazes = "datasets/mazes"
-        # Garante que a pasta existe
+        
+        # Garante que a pasta para os arquivos .txt existe
         if not os.path.exists(pasta_mazes):
             os.makedirs(pasta_mazes)
-        
-        # Define o caminho do arquivo txt usando o ID do labirinto
-        caminho_txt = f"{pasta_mazes}/{self.id}.txt"
-        
-        # Escreve a string do labirinto no arquivo
-        with open(caminho_txt, "w", encoding="utf-8") as arquivo_txt:
-            arquivo_txt.write(str(self.maze))
-        # ------------------------------------------
 
-        novos_dados = {
-            "id": self.id,
-            "width": self.width,
-            "length": self.length,
-            "collectibles": self.collectibles,
-            "cicles": self.cicles,
-        }
+        # Processa cada labirinto da lista
+        for maze in mazes:
+            id_str = str(maze.id)
+            
+            # Validação de ID duplicado (no CSV ou no próprio lote atual)
+            if id_str in ids_existentes:
+                print(f"Erro pulado: Já existe um labirinto cadastrado com o ID '{id_str}'.")
+                continue
+            
+            # Salva o arquivo .txt individual do labirinto
+            caminho_txt = f"{pasta_mazes}/{id_str}.txt"
+            with open(caminho_txt, "w", encoding="utf-8") as arquivo_txt:
+                arquivo_txt.write(str(maze.maze))
+                
+            # Adiciona os metadados na lista de preparação do lote
+            novas_linhas.append({
+                "id": maze.id,
+                "width": maze.width,
+                "length": maze.length,
+                "collectibles": maze.collectibles,
+                "cicles": maze.cicles,
+                "start": str(maze.start),  # Salva como string "(x, y)"
+                "end": str(maze.end),      # Salva como string "(x, y)"
+            })
+            
+            # Registra o ID para evitar duplicados dentro do próprio lote enviado
+            ids_existentes.add(id_str)
 
-        df_nova_linha = pd.DataFrame([novos_dados])
-        df_atualizado = pd.concat([df, df_nova_linha], ignore_index=True)
+        # Se todos os IDs eram repetidos, encerra sem alterar o CSV
+        if not novas_linhas:
+            print("Nenhum labirinto novo foi salvo.")
+            return False
+
+        # Concatena todas as novas linhas e salva o arquivo CSV de uma vez só
+        df_novas_linhas = pd.DataFrame(novas_linhas)
+        df_atualizado = pd.concat([df, df_novas_linhas], ignore_index=True)
         df_atualizado.to_csv(caminho_csv, index=False)
         
-        print(f"Labirinto '{self.id}' salvo no CSV e em '{caminho_txt}' com sucesso!")
+        print(f"Sucesso: {len(novas_linhas)} labirintos foram salvos em lote!")
         return True
+    
+    def create(cls, width, height, collectibles=0, cicles=0.1):
+        if largura % 2 == 0: largura += 1
+        if altura % 2 == 0: altura += 1
+
+        maze = np.ones((altura, largura), dtype=int)
+
+        def get_vizinhos(x, y):
+            vizinhos = []
+            for dx, dy in [(0, 2), (0, -2), (2, 0), (-2, 0)]:
+                nx, ny = x + dx, y + dy
+                if 0 < nx < largura - 1 and 0 < ny < altura - 1:
+                    vizinhos.append((nx, ny))
+            return vizinhos
+
+        stack = [(1, 1)]
+        maze[1, 1] = 0
+        
+        while stack:
+            x, y = stack[-1]
+            vizinhos = [v for v in get_vizinhos(x, y) if maze[v[1], v[0]] == 1]
+            
+            if vizinhos:
+                nx, ny = random.choice(vizinhos)
+                maze[y + (ny - y) // 2, x + (nx - x) // 2] = 0
+                maze[ny, nx] = 0
+                stack.append((nx, ny))
+            else:
+                stack.pop()
+
+        for y in range(1, altura - 1):
+            for x in range(1, largura - 1):
+                if maze[y, x] == 1:
+                    caminho_horizontal = maze[y, x-1] == 0 and maze[y, x+1] == 0 and maze[y-1, x] == 1 and maze[y+1, x] == 1
+                    caminho_vertical = maze[y-1, x] == 0 and maze[y+1, x] == 0 and maze[y, x-1] == 1 and maze[y, x+1] == 1
+                    
+                    if (caminho_horizontal or caminho_vertical) and random.random() < cicles:
+                        maze[y, x] = 0
+
+        inicio_x, inicio_y = 1, 1
+        fim_x, fim_y = largura - 2, altura - 2
+        
+        maze[fim_y, fim_x] = 0
+        if maze[fim_y - 1, fim_x] == 1 and maze[fim_y, fim_x - 1] == 1:
+            maze[fim_y - 1, fim_x] = 0
+
+        caminhos_livres = list(zip(*np.where(maze == 0)))
+        caminhos_livres = [(y, x) for y, x in caminhos_livres if (x, y) != (inicio_x, inicio_y) and (x, y) != (fim_x, fim_y)]
+        
+        coletaveis_pos = random.sample(caminhos_livres, min(collectibles, len(caminhos_livres)))
+        
+        matriz_final = np.full((altura, largura), '#', dtype=str)
+        matriz_final[maze == 0] = ' '
+        matriz_final[inicio_y, inicio_x] = 'A'
+        matriz_final[fim_y, fim_x] = 'B'
+        
+        for i, (y, x) in enumerate(coletaveis_pos):
+            matriz_final[y, x] = chr(97 + i)
+            
+        return Maze(
+            start = (inicio_x, inicio_y),
+            end = (fim_x, fim_y),
+            cicles=cicles,
+            collectibles=collectibles,
+            length=altura,
+            width=largura,
+            maze="\n".join(["".join(linha) for linha in matriz_final])
+        )
 
     @classmethod
     def open(cls, id: str):
@@ -90,6 +187,9 @@ class Maze:
                 maze_estrutura = conteudo_txt
 
         # 4. Instancia e retorna o objeto Maze reconstruído
+        start_tuple = ast.literal_eval(str(dados["start"])) if "start" in dados else (1, 1)
+        end_tuple = ast.literal_eval(str(dados["end"])) if "end" in dados else (int(dados["width"])-2, int(dados["length"])-2)
+
         print(f"Labirinto '{id}' carregado com sucesso!")
         return cls(
             width=int(dados["width"]),
@@ -97,7 +197,9 @@ class Maze:
             collectibles=int(dados["collectibles"]),
             cicles=float(dados["cicles"]),
             maze=maze_estrutura,
-            id=str(dados["id"])
+            id=str(dados["id"]),
+            start=start_tuple,
+            end=end_tuple,
         )
 
 
