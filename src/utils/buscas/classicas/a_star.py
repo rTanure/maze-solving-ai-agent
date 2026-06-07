@@ -14,6 +14,9 @@ def a_star(grid, inicio, objetivo):
     resultado.addfronteira(1)
     
     while fila_prioridade:
+        if len(fila_prioridade) > resultado.fronteira:
+            resultado.fronteira = len(fila_prioridade)
+            
         f_cost, g_cost, atual, caminho = heapq.heappop(fila_prioridade)
         
         resultado.addExpandidos(1)
@@ -37,5 +40,5 @@ def a_star(grid, inicio, objetivo):
                     heapq.heappush(fila_prioridade, (novo_f, novo_g, vizinho, caminho + [vizinho]))
                     resultado.addfronteira(1)
                     
-    resultado.finish()                
+    resultado.finish()
     return None, resultado
