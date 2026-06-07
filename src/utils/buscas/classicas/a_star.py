@@ -1,6 +1,6 @@
 import heapq
 from src.utils.auxiliar_busca import get_vizinhos, heuristica_manhattan
-from src.utils.resultados.resultado_astar import ResultadoAStar
+from src.utils.resultados.resultado_a_star import ResultadoAStar
 
 def a_star(grid, inicio, objetivo):
     resultado = ResultadoAStar()

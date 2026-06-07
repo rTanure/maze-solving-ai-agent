@@ -1,6 +1,6 @@
 import heapq
 from src.utils.auxiliar_busca import get_vizinhos, heuristica_manhattan
-from src.utils.resultados.resultado_online_astar import ResultadoOnlineAStar
+from src.utils.resultados.resultado_online_a_star import ResultadoOnlineAStar
 
 def _a_star_replanejamento(grid_interno, inicio, objetivo, resultado_tracker):
     h_inicio = heuristica_manhattan(inicio, objetivo)
