@@ -35,6 +35,7 @@ def hill_climbing(maze_obj):
     print("PONTOS:", pontos)
 
     lista_coletaveis = [k for k in pontos.keys() if isinstance(k, tuple)]
+    print("COletaveis:", lista_coletaveis)
     # ---------------------------------------------------
 
     estado_atual = lista_coletaveis[:]
@@ -55,6 +56,7 @@ def hill_climbing(maze_obj):
         for vizinho in vizinhos:
             custo_vizinho = calcular_custo_rota(vizinho, matriz_distancias)
             if custo_vizinho < melhor_custo_vizinho:
+                
                 melhor_custo_vizinho = custo_vizinho
                 melhor_vizinho = vizinho
                 
@@ -63,6 +65,7 @@ def hill_climbing(maze_obj):
             custo_atual = melhor_custo_vizinho
             curva_convergencia.append((iteracoes, custo_atual))
         else:
+            resultado.minimo_local = True
             break
 
     resultado.finish()

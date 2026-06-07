@@ -142,6 +142,8 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
 
         delta = custo_candidato - custo_atual
 
+        curva_convergencia.append((iteracoes, custo_atual))
+
         if (
             delta < 0
             or random.random() < math.exp(-delta / temp)

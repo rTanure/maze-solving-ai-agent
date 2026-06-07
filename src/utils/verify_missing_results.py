@@ -23,6 +23,8 @@ def verify_missing_results():
         "ASTAR": ResultadoAStar,
         "ONLINE_A*": ResultadoOnlineAStar,
         "SIMULATED_ANNEALING": ResultadoSimulatedAnnealing,
+        "HILL_CLIMBING": ResultadoHillClimbing,
+        "SIMULATED_ANNEALING": ResultadoSimulatedAnnealing,
         "HILL_CLIMBING": ResultadoHillClimbing
     }
 

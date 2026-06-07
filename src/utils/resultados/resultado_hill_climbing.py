@@ -10,7 +10,9 @@ class ResultadoHillClimbing(Resultado):
         self.iteracoes = 0           
         # --- NOVOS ATRIBUTOS ---
         self.ordem_coletaveis = [] 
-        self.rota_macro = []       
+        self.rota_macro = []
+
+        self.minimo_local = False       
 
     def salvarResultado(self):
         pasta_resultados = "datasets"
@@ -25,6 +27,7 @@ class ResultadoHillClimbing(Resultado):
             "sucesso": self.sucesso,
             "custo_final": self.custo,
             "iteracoes": self.iteracoes,
+            "minimo_local": self.minimo_local,
             "ordem_coletaveis": str(self.ordem_coletaveis), # Salvando os coletáveis!
             "rota_macro": str(self.rota_macro),
             "curva_convergencia": str(self.curva)
