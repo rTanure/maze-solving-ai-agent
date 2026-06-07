@@ -1,10 +1,14 @@
 import heapq
-from src.utils.auxiliar_busca import get_vizinhos
+from src.utils.buscas.auxiliar_busca import get_vizinhos, encontrar_inicio_fim
 from src.utils.resultados.resultado_ucs import ResultadoUCS
 
-def ucs(grid, inicio, objetivo):
+def ucs(maze_obj):
     resultado = ResultadoUCS()
     resultado.start()
+
+    # Extraindo dados do objeto Maze
+    grid = maze_obj.maze
+    inicio, objetivo = encontrar_inicio_fim(grid)
 
     fila_prioridade = [(0, inicio, [inicio])]
     visitados = set()
@@ -18,8 +22,10 @@ def ucs(grid, inicio, objetivo):
             resultado.sucesso = True
             resultado.passos = len(caminho)
             resultado.custo = custo
+            resultado.caminho = caminho # Salvando no objeto
             resultado.finish()
-            return caminho, resultado
+            
+            return resultado # Retornando apenas o objeto
             
         if atual not in visitados:
             visitados.add(atual)
@@ -28,5 +34,6 @@ def ucs(grid, inicio, objetivo):
                 if vizinho not in visitados:
                     heapq.heappush(fila_prioridade, (custo + 1, vizinho, caminho + [vizinho]))
                     resultado.addfronteira(1)
+                    
     resultado.finish()                
-    return None, resultado
+    return resultado

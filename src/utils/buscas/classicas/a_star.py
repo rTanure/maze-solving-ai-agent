@@ -1,10 +1,14 @@
 import heapq
-from src.utils.auxiliar_busca import get_vizinhos, heuristica_manhattan
+from src.utils.buscas.auxiliar_busca import get_vizinhos, heuristica_manhattan, encontrar_inicio_fim
 from src.utils.resultados.resultado_a_star import ResultadoAStar
 
-def a_star(grid, inicio, objetivo):
+def a_star(maze_obj):
     resultado = ResultadoAStar()
     resultado.start()
+    
+    # Extraindo dados do objeto Maze
+    grid = maze_obj.maze
+    inicio, objetivo = encontrar_inicio_fim(grid)
     
     h_inicio = heuristica_manhattan(inicio, objetivo)
     
@@ -25,9 +29,10 @@ def a_star(grid, inicio, objetivo):
             resultado.sucesso = True
             resultado.passos = len(caminho)
             resultado.custo = g_cost
+            resultado.caminho = caminho # Salvando no objeto
             resultado.finish()
             
-            return caminho, resultado
+            return resultado # Retornando apenas o objeto
             
         if atual not in visitados:
             visitados.add(atual)
@@ -41,4 +46,4 @@ def a_star(grid, inicio, objetivo):
                     resultado.addfronteira(1)
                     
     resultado.finish()
-    return None, resultado
+    return resultado

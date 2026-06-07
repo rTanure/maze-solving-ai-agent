@@ -29,3 +29,12 @@ def get_vizinhos(grid, no):
 
 def heuristica_manhattan(no1, no2):
     return abs(no1[0] - no2[0]) + abs(no1[1] - no2[1])
+
+def encontrar_inicio_fim(grid):
+    inicio = None
+    objetivo = None
+    for y, linha in enumerate(grid):
+        for x, char in enumerate(linha):
+            if char == 'A': inicio = (y, x)
+            elif char == 'B': objetivo = (y, x)
+    return inicio, objetivo

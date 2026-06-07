@@ -15,6 +15,7 @@ class Resultado(ABC):
         
         self.inicio = 0
         self.fim = 0
+        self.caminho = []
     
     def addCusto(self, increment = 1):
         self.custo += increment

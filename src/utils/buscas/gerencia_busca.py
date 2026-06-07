@@ -1,4 +1,3 @@
-from src.utils.auxiliar_busca import parse_labirinto
 from src.utils.resultados.resultado_bfs import ResultadoBFS
 from src.utils.resultados.resultado_dfs import ResultadoDFS
 from src.utils.resultados.resultado_ucs import ResultadoUCS
@@ -20,40 +19,37 @@ class GerenciadorDeBusca:
             'DFS': {'funcao': dfs, 'classe_resultado': ResultadoDFS},
             'UCS': {'funcao': ucs, 'classe_resultado': ResultadoUCS},
             'GULOSA': {'funcao': busca_gulosa, 'classe_resultado': ResultadoGuloso},
-            'A*': {'funcao': a_star, 'classe_resultado': ResultadoAStar},
+            'ASTAR': {'funcao': a_star, 'classe_resultado': ResultadoAStar}, # Ajuste para ASTAR se os lambdas enviam assim
             'ONLINE_A*': {'funcao': online_a_star, 'classe_resultado': ResultadoOnlineAStar}
         }
 
-    def executar_busca(self, nome_algoritmo, labirinto_str, dados_adicionais=None):
+    # 1. ASSINATURA NOVA: Agora recebe diretamente o objeto Maze!
+    def executar_busca(self, nome_algoritmo, maze_obj, dados_adicionais=None):
         
         nome_algoritmo = nome_algoritmo.upper()
         
         if nome_algoritmo not in self.algoritmos:
             raise ValueError(f"Algoritmo '{nome_algoritmo}' não suportado. Opções válidas: {list(self.algoritmos.keys())}")
-            
-        if dados_adicionais is None:
-            dados_adicionais = {}
-
-        grid, inicio, objetivo = parse_labirinto(labirinto_str)
-        
-        if not inicio or not objetivo:
-            print(f"Erro: Labirinto inválido para {nome_algoritmo}. Pontos A e/ou B não encontrados.")
-            return None, None
 
         referencia = self.algoritmos[nome_algoritmo]
         funcao_busca = referencia['funcao']
 
         print(f"\n--- Iniciando execução: {nome_algoritmo} ---")
         
-        caminho, relatorio = funcao_busca(grid, inicio, objetivo)
+        # 2. CHAMADA NOVA: Passa só o objeto e recebe só o relatório de volta
+        relatorio = funcao_busca(maze_obj)
+        
+        # Extrai o caminho de dentro do relatório (caso o menu precise para desenhar)
+        caminho = getattr(relatorio, 'caminho', None)
 
         if relatorio.sucesso:
             print(f"[{nome_algoritmo}] Caminho encontrado! (Passos: {relatorio.passos}, Custo: {relatorio.custo})")
         else:
             print(f"[{nome_algoritmo}] Falha. Nenhum caminho encontrado.")
             
-        if hasattr(relatorio, '_salvaResultado'):
+        # Corrigindo a verificação de método (usando 'salvarResultado' em vez de '_salvaResultado' que estava no seu código)
+        if hasattr(relatorio, 'salvarResultado'):
              relatorio.salvarResultado()
-             print(f"[{nome_algoritmo}] Resultados salvos com sucesso.")
+             print(f"[{nome_algoritmo}] Resultados salvos no CSV com sucesso.")
 
         return caminho, relatorio
