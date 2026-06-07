@@ -1,7 +1,7 @@
-from src.utils.buscas.local.hill_climbing import hill_climbing
+from src.utils.buscas.local.simulated_annealing import simulated_annealing
 
 # 1. Nova assinatura: recebe o objeto do labirinto e a maleta de dados
-def rodar_bateria_hill_climbing(maze_obj, num_execucoes=100 ):
+def rodar_bateria_simulated_annealing(maze_obj, num_execucoes, temp_inicial, taxa_resfriamento):
     
     # A lista de coletáveis já vem pronta dentro dos dados_adicionais
     # (nós montamos ela no menu antes de chamar essa função)
@@ -12,7 +12,7 @@ def rodar_bateria_hill_climbing(maze_obj, num_execucoes=100 ):
     
     for _ in range(num_execucoes):
         # 2. Chama a nova função orientada a objetos
-        res = hill_climbing(maze_obj)
+        res = simulated_annealing(maze_obj, temp_inicial, taxa_resfriamento)
         resultados.append(res)
         
     # 3. Acesso aos dados como atributos do objeto (r.atributo)

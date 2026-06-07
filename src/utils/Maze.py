@@ -22,10 +22,7 @@ class Maze:
 
     @classmethod
     def save_all(cls, mazes: list['Maze']) -> bool:
-        """
-        Recebe uma lista de instâncias de Maze, valida duplicatas,
-        salva os arquivos .txt individuais e atualiza o CSV em lote.
-        """
+        
         if not mazes:
             print("Nenhum labirinto fornecido para salvar.")
             return False
@@ -152,7 +149,7 @@ class Maze:
         matriz_final[fim_y, fim_x] = 'B'
         
         for i, (y, x) in enumerate(coletaveis_pos):
-            matriz_final[y, x] = chr(97 + i)
+            matriz_final[y, x] = 'C'
             
         return Maze(
             start = (inicio_x, inicio_y),
@@ -215,10 +212,6 @@ class Maze:
     
     @classmethod
     def get_ids(cls) -> list[str]:
-        """
-        Lê o arquivo CSV de metadados e retorna uma lista com todos os IDs dos labirintos cadastrados.
-        Se o arquivo não existir ou estiver vazio, retorna uma lista vazia.
-        """
         caminho_csv = "datasets/mazes.csv"
             
         df = get_dataframe(caminho_csv)

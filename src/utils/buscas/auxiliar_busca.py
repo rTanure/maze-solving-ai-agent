@@ -1,6 +1,10 @@
 import heapq
 from collections import deque
 
+def get_celula(grid, coord):
+    x, y = coord
+    return grid[y][x]
+
 def parse_labirinto(labirinto_str):
     grid = [list(linha) for linha in labirinto_str.strip().split('\n')]
     inicio = None
@@ -9,22 +13,22 @@ def parse_labirinto(labirinto_str):
     for y, linha in enumerate(grid):
         for x, char in enumerate(linha):
             if char == 'A':
-                inicio = (y, x)
+                inicio = (x, y)
             elif char == 'B':
-                objetivo = (y, x)
+                objetivo = (x, y)
                 
     return grid, inicio, objetivo
 
 def get_vizinhos(grid, no):
-    y, x = no
+    x, y = no
     vizinhos = []
     direcoes = [(-1, 0), (1, 0), (0, -1), (0, 1)] 
     
-    for dy, dx in direcoes:
-        ny, nx = y + dy, x + dx
+    for dx, dy in direcoes:
+        nx, ny = x + dx, y + dy
         if 0 <= ny < len(grid) and 0 <= nx < len(grid[0]):
             if grid[ny][nx] != '#':
-                vizinhos.append((ny, nx))
+                vizinhos.append((nx, ny))
     return vizinhos
 
 def heuristica_manhattan(no1, no2):

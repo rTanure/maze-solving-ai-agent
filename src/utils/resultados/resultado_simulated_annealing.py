@@ -3,11 +3,12 @@ import pandas as pd
 from src.utils.get_dataframe import get_dataframe
 from src.utils.resultados.resultado import Resultado
 
-class ResultadoHillClimbing(Resultado):
+class ResultadoSimulatedAnnealing(Resultado):
     def __init__(self, maze_id):
         super().__init__(maze_id)
         self.curva = []      
-        self.iteracoes = 0           
+        self.iteracoes = 0     
+        
         # --- NOVOS ATRIBUTOS ---
         self.ordem_coletaveis = [] 
         self.rota_macro = []       
@@ -17,7 +18,7 @@ class ResultadoHillClimbing(Resultado):
         if not os.path.exists(pasta_resultados):
             os.makedirs(pasta_resultados)
 
-        caminho_csv = f"{pasta_resultados}/resultados_hill_climbing.csv"
+        caminho_csv = f"{pasta_resultados}/resultados_simulated_annealing.csv"
         df = get_dataframe(caminho_csv)
 
         novos_dados = {

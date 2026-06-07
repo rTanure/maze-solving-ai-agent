@@ -24,23 +24,19 @@ def gerar_vizinhos_por_troca(ordem_atual):
             vizinhos.append(vizinho)
     return vizinhos
 
-def hill_climbing(maze_obj, dados_adicionais=None):
-    resultado = ResultadoHillClimbing()
+def hill_climbing(maze_obj):
+    # 1. INICIALIZA O RESULTADO AQUI (faltava no seu snippet!)
+    resultado = ResultadoHillClimbing(maze_obj.id)
     resultado.start()
 
-    if not dados_adicionais or 'matriz' not in dados_adicionais:
-        print("Erro: Matriz de distâncias não fornecida nos dados_adicionais.")
-        resultado.finish()
-        return resultado
+    from src.utils.menor_caminho import obter_grafo
+    matriz_distancias, matriz_caminhos, pontos = obter_grafo(maze_obj)
 
-    matriz_distancias = dados_adicionais['matriz']
-    lista_coletaveis = dados_adicionais['coletaveis'] # Agora é uma lista de tuplas [(x, y), ...]
-    
-    # Nova matriz que guarda as coordenadas reais do caminho
-    matriz_caminhos = dados_adicionais.get('matriz_caminhos', None)
+    lista_coletaveis = [k for k in pontos.keys() if isinstance(k, tuple)]
+    # ---------------------------------------------------
 
     estado_atual = lista_coletaveis[:]
-    random.shuffle(estado_atual) 
+    random.shuffle(estado_atual)
     custo_atual = calcular_custo_rota(estado_atual, matriz_distancias)
     
     iteracoes = 0
@@ -103,7 +99,7 @@ def hill_climbing(maze_obj, dados_adicionais=None):
         # O .caminho final agora é uma lista gigante de (y, x) pronta para ser desenhada!
         resultado.caminho = caminho_completo
     else:
-        # Fallback de segurança se você esquecer de mandar a matriz_caminhos
+        # Fallback de segurança se esquecer de mandar a matriz_caminhos
         resultado.caminho = rota_macro 
 
     return resultado
