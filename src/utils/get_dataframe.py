@@ -7,7 +7,6 @@ def get_dataframe(caminho_arquivo):
     Caso contrário, cria um arquivo CSV vazio com o nome fornecido e retorna um DataFrame vazio.
     """
     if os.path.exists(caminho_arquivo):
-        print(f"Arquivo encontrado: Carregando '{caminho_arquivo}'...")
         # Verifica a extensão para ler corretamente (suporta CSV ou Excel básico)
         if caminho_arquivo.endswith('.xlsx') or caminho_arquivo.endswith('.xls'):
             return pd.read_excel(caminho_arquivo)

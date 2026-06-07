@@ -5,14 +5,14 @@ import pandas as pd
 import os
 
 class Resultado(ABC):
-    def __init__(self):
+    def __init__(self, maze_id):
         self.sucesso = False
+        self.maze_id = maze_id if maze_id else print(">>> Id deve ser passado!!!")
         self.custo = 0
         self.passos = 0
         self.expandidos = 0
         self.fronteira = 0
         self.tempo = 0
-        
         self.inicio = 0
         self.fim = 0
         self.caminho = []
@@ -38,6 +38,7 @@ class Resultado(ABC):
     
     def _getResultado(self): 
         return {
+            "maze_id": [self.maze_id],
             "sucesso": [self.sucesso],
             "custo": [self.custo],
             "passos": [self.passos],
@@ -67,4 +68,8 @@ class Resultado(ABC):
 
     @abstractmethod
     def salvarResultado():
+        pass
+    
+    @abstractmethod
+    def get_df():
         pass

@@ -2,7 +2,7 @@ from src.utils.buscas.auxiliar_busca import get_vizinhos, encontrar_inicio_fim
 from src.utils.resultados.resultado_dfs import ResultadoDFS
 
 def dfs(maze_obj):
-    resultado = ResultadoDFS()
+    resultado = ResultadoDFS(maze_obj.id)
     resultado.start()
 
     # Extraindo dados do objeto Maze

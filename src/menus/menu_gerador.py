@@ -38,12 +38,10 @@ def menu_gerar_labirintos_lotes():
     for _ in range(number_of_mazes):
         width = random.randint(min_width, max_width)
         height = random.randint(min_height, max_height)
-        print("Antes: ", width, " x ", height)
 
         collectibles = random.randint(min_collectibles, max_collectibles)
         cicles = random.uniform(min_cicle, max_cicle)
 
-        print("Depois: ", width, " x ", height)
         mazes.append(Maze.create(width, height, collectibles, cicles))
     
     Maze.save_all(mazes)

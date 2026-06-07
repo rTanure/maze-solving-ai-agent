@@ -95,7 +95,6 @@ class Maze:
         collectibles = int(collectibles)
         cicles = float(str(cicles).replace(',', '.'))
 
-        print("Interno: ", width, " x ", height)
 
         if width % 2 == 0: width += 1
         if height % 2 == 0: height += 1
@@ -213,6 +212,22 @@ class Maze:
             start=start_tuple,
             end=end_tuple,
         )
+    
+    @classmethod
+    def get_ids(cls) -> list[str]:
+        """
+        Lê o arquivo CSV de metadados e retorna uma lista com todos os IDs dos labirintos cadastrados.
+        Se o arquivo não existir ou estiver vazio, retorna uma lista vazia.
+        """
+        caminho_csv = "datasets/mazes.csv"
+            
+        df = get_dataframe(caminho_csv)
+        
+        if df.empty or "id" not in df.columns:
+            return []
+            
+        # Converte os IDs para string e retorna como uma lista nativa do Python
+        return df["id"].astype(str).tolist()
 
 
 

@@ -3,7 +3,7 @@ from src.utils.buscas.auxiliar_busca import get_vizinhos, heuristica_manhattan, 
 from src.utils.resultados.resultado_guloso import ResultadoGuloso
 
 def busca_gulosa(maze_obj):
-    resultado = ResultadoGuloso()
+    resultado = ResultadoGuloso(maze_obj.id)
     resultado.start()
    
     # Extraindo dados do objeto Maze

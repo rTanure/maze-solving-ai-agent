@@ -3,7 +3,7 @@ from src.utils.buscas.auxiliar_busca import get_vizinhos, encontrar_inicio_fim
 from src.utils.resultados.resultado_ucs import ResultadoUCS
 
 def ucs(maze_obj):
-    resultado = ResultadoUCS()
+    resultado = ResultadoUCS(maze_obj.id)
     resultado.start()
 
     # Extraindo dados do objeto Maze

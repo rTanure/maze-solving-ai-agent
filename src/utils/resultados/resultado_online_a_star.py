@@ -1,10 +1,11 @@
 from src.utils.resultados.resultado import Resultado
+from src.utils.get_dataframe import get_dataframe
 import pandas as pd
 import os
 
 class ResultadoOnlineAStar(Resultado):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, maze_id):
+        super().__init__(maze_id)
         self.celulas_reveladas = 0
         self.celulas_revisitadas = 0
         self.replanejamentos = 0

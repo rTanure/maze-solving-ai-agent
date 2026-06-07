@@ -3,7 +3,7 @@ from src.utils.buscas.auxiliar_busca import get_vizinhos, encontrar_inicio_fim
 from src.utils.resultados.resultado_bfs import ResultadoBFS
 
 def bfs(maze_obj):
-    resultado = ResultadoBFS()
+    resultado = ResultadoBFS(maze_obj.id)
     resultado.start()
     
     # Extraindo dados do objeto Maze

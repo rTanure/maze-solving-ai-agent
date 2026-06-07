@@ -20,7 +20,7 @@ class GerenciadorDeBusca:
             'UCS': {'funcao': ucs, 'classe_resultado': ResultadoUCS},
             'GULOSA': {'funcao': busca_gulosa, 'classe_resultado': ResultadoGuloso},
             'ASTAR': {'funcao': a_star, 'classe_resultado': ResultadoAStar}, # Ajuste para ASTAR se os lambdas enviam assim
-            'ONLINE_A*': {'funcao': online_a_star, 'classe_resultado': ResultadoOnlineAStar}
+            'ONLINE_ASTAR': {'funcao': online_a_star, 'classe_resultado': ResultadoOnlineAStar}
         }
 
     # 1. ASSINATURA NOVA: Agora recebe diretamente o objeto Maze!

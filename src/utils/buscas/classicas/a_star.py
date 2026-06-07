@@ -3,7 +3,7 @@ from src.utils.buscas.auxiliar_busca import get_vizinhos, heuristica_manhattan, 
 from src.utils.resultados.resultado_a_star import ResultadoAStar
 
 def a_star(maze_obj):
-    resultado = ResultadoAStar()
+    resultado = ResultadoAStar(maze_obj.id)
     resultado.start()
     
     # Extraindo dados do objeto Maze
