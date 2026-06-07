@@ -6,6 +6,8 @@ from src.utils.resultados.resultado_a_star import ResultadoAStar
 from src.utils.buscas.online.online_a_star import ResultadoOnlineAStar
 from src.utils.resultados.resultado_guloso import ResultadoGuloso
 from src.utils.resultados.resultado_dfs import ResultadoDFS
+from src.utils.resultados.resultado_simulated_annealing import ResultadoSimulatedAnnealing
+
 
 def verify_missing_results():
     ids_totais = Maze.get_ids()
@@ -17,7 +19,8 @@ def verify_missing_results():
         "BFS": ResultadoBFS,
         "GULOSA": ResultadoGuloso,
         "ASTAR": ResultadoAStar,
-        "ONLINE_A*": ResultadoOnlineAStar
+        "ONLINE_A*": ResultadoOnlineAStar,
+        "SIMULATED_ANNEALING": ResultadoSimulatedAnnealing
     }
 
     ids_por_metodo = {}

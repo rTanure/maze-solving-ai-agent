@@ -3,7 +3,7 @@ import random
 from src.utils.resultados.resultado_simulated_annealing import ResultadoSimulatedAnnealing# Você criaria essa classe baseada na sua de Hill Climbing
 from src.utils.buscas.local.hill_climbing import calcular_custo_rota, gerar_vizinhos_por_troca
 
-def simulated_annealing(maze_obj, temp_inicial, taxa_resfriamento):
+def simulated_annealing(maze_obj, temp_inicial = 1000, taxa_resfriamento = 0.2):
     resultado = ResultadoSimulatedAnnealing(maze_obj.id)
     resultado.start()
 

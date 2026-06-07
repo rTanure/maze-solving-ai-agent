@@ -2,8 +2,7 @@ from src.utils.verify_missing_results import verify_missing_results
 from src.utils.buscas.gerencia_busca import GerenciadorDeBusca
 from src.utils.Maze import Maze
 
-def run_missing_results():
-    missing_results = verify_missing_results()
+def run_missing_results(missing_results, *args, **kwargs):
 
     # Calcula o total de buscas que precisam ser executadas
     total_tarefas = sum(len(algorithms) for algorithms in missing_results.values())
@@ -25,7 +24,8 @@ def run_missing_results():
             # Print formatado: ID - Algoritmo (Progresso/Total - Porcentagem%)
             print(f"{maze_id} - {algorithm} ({progresso_atual}/{total_tarefas} - {porcentagem:.2f}%)")
             
-            buscador.executar_busca(algorithm, maze)
+            buscador.executar_busca(algorithm, maze, *args, **kwargs)
+            
     
     print("Resultados finalizados")
 

@@ -13,6 +13,5 @@ def get_dataframe(caminho_arquivo):
         else:
             return pd.read_csv(caminho_arquivo)
     else:
-        print(f"Arquivo '{caminho_arquivo}' não encontrado. Retornando DataFrame vazio...")
         # Apenas retorna a instância na memória
         return pd.DataFrame()
