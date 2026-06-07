@@ -5,9 +5,9 @@ import random
 
 def menu_gerar_labirintos_lotes():
     min_width = questionary.text("Largura mínima (padrão 5):").ask()
-    max_width = questionary.text(f"Largura máxima (padrão 1000):").ask()
+    max_width = questionary.text(f"Largura máxima (padrão 400):").ask()
     min_height = questionary.text("Comprimento mínimo (padrão 5):").ask()
-    max_height = questionary.text("Comprimento máximo (padrão 1000):").ask()
+    max_height = questionary.text("Comprimento máximo (padrão 400):").ask()
     min_collectibles = questionary.text("Coletáveis mínimo (padrão 0)").ask()
     max_collectibles = questionary.text("Coletáveis máximo (padrão 26):").ask()
     min_cicle = questionary.text("Probabilidade de ciclo mínimo (padrão 0.1):").ask()
@@ -15,9 +15,9 @@ def menu_gerar_labirintos_lotes():
     number_of_mazes = questionary.text("Quantidade de labirintos (padrão 15):").ask()
 
     min_width = int(min_width) if min_width else 5
-    max_width = int(max_width) if max_width else 1000
+    max_width = int(max_width) if max_width else 400
     min_height = int(min_height) if min_height else 5
-    max_height = int(max_height) if max_height else 1000
+    max_height = int(max_height) if max_height else 400
     if min_width < 5: min_width = 5
     if max_width < 5: max_width = 5
     if min_height < 5: min_height = 5

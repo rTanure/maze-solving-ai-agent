@@ -39,15 +39,9 @@ class GerenciadorDeBusca:
         referencia = self.algoritmos[nome_algoritmo]
         funcao_busca = referencia['funcao']
 
-        print(f"\n--- Iniciando execução: {nome_algoritmo} ---")
         
         # 2. CHAMADA NOVA: Passa só o objeto e recebe só o relatório de volta
-        try:
-            relatorio = funcao_busca(maze_obj, dados_adicionais)
-        except TypeError:
-            # Se for uma Busca Clássica e rejeitar o 2º parâmetro, roda normal
-            relatorio = funcao_busca(maze_obj)
-        print(relatorio.caminho)
+        relatorio = funcao_busca(maze_obj)
         
         # Extrai o caminho de dentro do relatório (caso o menu precise para desenhar)
         caminho = getattr(relatorio, 'caminho', None)

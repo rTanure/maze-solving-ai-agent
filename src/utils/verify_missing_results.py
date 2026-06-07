@@ -15,8 +15,8 @@ def verify_missing_results():
         "DFS": ResultadoDFS,
         "BFS": ResultadoBFS,
         "GULOSA": ResultadoGuloso,
-        "ASTART": ResultadoAStar,
-        "ONLINE_ASTAR": ResultadoAStar
+        "ASTAR": ResultadoAStar,
+        # "ONLINE_ASTAR": ResultadoAStar
     }
 
     ids_por_metodo = {}
