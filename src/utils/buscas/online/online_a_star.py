@@ -70,8 +70,8 @@ def online_a_star(maze_obj, dados_adicionais=None):
     largura = len(grid_real[0])
     
     grid_interno = [['?' for _ in range(largura)] for _ in range(altura)]
-    grid_interno[inicio[0]][inicio[1]] = 'A'
-    grid_interno[objetivo[0]][objetivo[1]] = 'B'
+    grid_interno[inicio[1]][inicio[0]] = 'A'
+    grid_interno[objetivo[1]][objetivo[0]] = 'B'
     
     atual = inicio
     caminho_percorrido = [atual]
@@ -83,14 +83,14 @@ def online_a_star(maze_obj, dados_adicionais=None):
     caminho_planejado = []
     
     while atual != objetivo:
-        y, x = atual
+        x, y = atual
         direcoes = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         
         caminho_bloqueado = False
         
         # FASE 1: Perceber
-        for dy, dx in direcoes:
-            ny, nx = y + dy, x + dx
+        for dx, dy in direcoes:
+            nx, ny = x + dx, y + dy
             if 0 <= ny < altura and 0 <= nx < largura:
                 if (ny, nx) not in celulas_conhecidas:
                     estado_real = grid_real[ny][nx]

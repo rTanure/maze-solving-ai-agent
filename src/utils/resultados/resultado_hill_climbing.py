@@ -12,7 +12,7 @@ class ResultadoHillClimbing(Resultado):
         self.ordem_coletaveis = [] 
         self.rota_macro = []       
 
-    def salvarResultado(self, id_labirinto="N/A"):
+    def salvarResultado(self):
         pasta_resultados = "datasets"
         if not os.path.exists(pasta_resultados):
             os.makedirs(pasta_resultados)
@@ -21,7 +21,7 @@ class ResultadoHillClimbing(Resultado):
         df = get_dataframe(caminho_csv)
 
         novos_dados = {
-            "id_labirinto": id_labirinto,
+            "id_labirinto": self.maze_id,
             "sucesso": self.sucesso,
             "custo_final": self.custo,
             "iteracoes": self.iteracoes,
