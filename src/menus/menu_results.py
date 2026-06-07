@@ -17,8 +17,8 @@ def menu_results():
     print(algorithm_set)
 
     if "SIMULATED_ANNEALING" in algorithm_set or "HILL_CLIMBING" in algorithm_set:
-        num_execucoes_str = questionary.text("Numero de execucoes (padrão 100):").ask()
-        num_execucoes = int(num_execucoes_str) if num_execucoes_str else 100
+        num_execucoes_str = questionary.text("Numero de execucoes (padrão 10):").ask()
+        num_execucoes = int(num_execucoes_str) if num_execucoes_str else 10
 
     if "SIMULATED_ANNEALING" in algorithm_set:
         temp_inicial_str = questionary.text("Temperadura inicial do simulated annealing (padrão 1000):").ask()

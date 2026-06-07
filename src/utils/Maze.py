@@ -198,7 +198,6 @@ class Maze:
         start_tuple = ast.literal_eval(str(dados["start"])) if "start" in dados else (1, 1)
         end_tuple = ast.literal_eval(str(dados["end"])) if "end" in dados else (int(dados["width"])-2, int(dados["length"])-2)
 
-        print(f"Labirinto '{id}' carregado com sucesso!")
         return cls(
             width=int(dados["width"]),
             length=int(dados["length"]),

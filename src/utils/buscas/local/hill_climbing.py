@@ -33,7 +33,6 @@ def hill_climbing(maze_obj):
     matriz_distancias, matriz_caminhos, pontos = obter_grafo(maze_obj)
 
     print("PONTOS:", pontos)
-    print("COLETAVEIS:", lista_coletaveis)
 
     lista_coletaveis = [k for k in pontos.keys() if isinstance(k, tuple)]
     # ---------------------------------------------------

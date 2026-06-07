@@ -7,6 +7,8 @@ from src.utils.buscas.online.online_a_star import ResultadoOnlineAStar
 from src.utils.resultados.resultado_guloso import ResultadoGuloso
 from src.utils.resultados.resultado_dfs import ResultadoDFS
 from src.utils.resultados.resultado_simulated_annealing import ResultadoSimulatedAnnealing
+from src.utils.resultados.resultado_hill_climbing import ResultadoHillClimbing
+
 
 
 def verify_missing_results():
@@ -20,7 +22,8 @@ def verify_missing_results():
         "GULOSA": ResultadoGuloso,
         "ASTAR": ResultadoAStar,
         "ONLINE_A*": ResultadoOnlineAStar,
-        "SIMULATED_ANNEALING": ResultadoSimulatedAnnealing
+        "SIMULATED_ANNEALING": ResultadoSimulatedAnnealing,
+        "HILL_CLIMBING": ResultadoHillClimbing
     }
 
     ids_por_metodo = {}

@@ -8,7 +8,7 @@ def rodar_bateria_simulated_annealing(maze_obj, num_execucoes, temp_inicial, tax
     
     resultados = []
     
-    print(f"⏳ Rodando {num_execucoes} simulações de SA. Aguarde...")
+    print(f"⏳ Rodando {num_execucoes} simulações de Simulated annealing. Aguarde...")
     
     for _ in range(num_execucoes):
         # 2. Chama a nova função orientada a objetos

@@ -113,7 +113,6 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
     iteracoes = 0
     curva_convergencia = [(0, custo_atual)]
 
-    print("Entrando no loop principal")
 
     while temp > 0.1:
 

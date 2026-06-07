@@ -13,5 +13,6 @@ def get_dataframe(caminho_arquivo):
         else:
             return pd.read_csv(caminho_arquivo)
     else:
+        print("DAtaframe não encontrado")
         # Apenas retorna a instância na memória
         return pd.DataFrame()

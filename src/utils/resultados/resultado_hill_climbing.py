@@ -38,6 +38,6 @@ class ResultadoHillClimbing(Resultado):
 
         df_atualizado.to_csv(caminho_csv, index=False)
 
-    def get_df(self):
-        """Implementação do método abstrato obrigatório."""
-        return pd.DataFrame([self.__dict__])
+    @staticmethod
+    def get_df():
+        return get_dataframe("datasets/resultados_hill_climbing.csv")
