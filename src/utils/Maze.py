@@ -9,7 +9,10 @@ class Maze:
     # Se o ID e o maze não forem passados, ele criará um novo labirinto com as informações restantes.
     def __init__(self, width, length, collectibles, cicles, maze, start, end, id = None):
         self.id = id if id else uuid.uuid4()
-        self.maze = maze
+        if isinstance(maze, str):
+            self.maze = [list(linha) for linha in maze.split("\n") if linha]
+        else:
+            self.maze = maze
         self.width = width
         self.length = length
         self.collectibles = collectibles
@@ -52,7 +55,11 @@ class Maze:
             # Salva o arquivo .txt individual do labirinto
             caminho_txt = f"{pasta_mazes}/{id_str}.txt"
             with open(caminho_txt, "w", encoding="utf-8") as arquivo_txt:
-                arquivo_txt.write(str(maze.maze))
+                if isinstance(maze.maze, list):
+                    string_labirinto = "\n".join(["".join(linha) for linha in maze.maze])
+                else:
+                    string_labirinto = str(maze.maze)
+                arquivo_txt.write(string_labirinto)
                 
             # Adiciona os metadados na lista de preparação do lote
             novas_linhas.append({
@@ -81,17 +88,26 @@ class Maze:
         print(f"Sucesso: {len(novas_linhas)} labirintos foram salvos em lote!")
         return True
     
+    @classmethod
     def create(cls, width, height, collectibles=0, cicles=0.1):
-        if largura % 2 == 0: largura += 1
-        if altura % 2 == 0: altura += 1
+        width = int(width)
+        height = int(height)
+        collectibles = int(collectibles)
+        cicles = float(str(cicles).replace(',', '.'))
 
-        maze = np.ones((altura, largura), dtype=int)
+        print("Interno: ", width, " x ", height)
+
+        if width % 2 == 0: width += 1
+        if height % 2 == 0: height += 1
+
+
+        maze = np.ones((height, width), dtype=int)
 
         def get_vizinhos(x, y):
             vizinhos = []
             for dx, dy in [(0, 2), (0, -2), (2, 0), (-2, 0)]:
                 nx, ny = x + dx, y + dy
-                if 0 < nx < largura - 1 and 0 < ny < altura - 1:
+                if 0 < nx < width - 1 and 0 < ny < height - 1:
                     vizinhos.append((nx, ny))
             return vizinhos
 
@@ -110,8 +126,8 @@ class Maze:
             else:
                 stack.pop()
 
-        for y in range(1, altura - 1):
-            for x in range(1, largura - 1):
+        for y in range(1, height - 1):
+            for x in range(1, width - 1):
                 if maze[y, x] == 1:
                     caminho_horizontal = maze[y, x-1] == 0 and maze[y, x+1] == 0 and maze[y-1, x] == 1 and maze[y+1, x] == 1
                     caminho_vertical = maze[y-1, x] == 0 and maze[y+1, x] == 0 and maze[y, x-1] == 1 and maze[y, x+1] == 1
@@ -120,7 +136,7 @@ class Maze:
                         maze[y, x] = 0
 
         inicio_x, inicio_y = 1, 1
-        fim_x, fim_y = largura - 2, altura - 2
+        fim_x, fim_y = width - 2, height - 2
         
         maze[fim_y, fim_x] = 0
         if maze[fim_y - 1, fim_x] == 1 and maze[fim_y, fim_x - 1] == 1:
@@ -131,7 +147,7 @@ class Maze:
         
         coletaveis_pos = random.sample(caminhos_livres, min(collectibles, len(caminhos_livres)))
         
-        matriz_final = np.full((altura, largura), '#', dtype=str)
+        matriz_final = np.full((height, width), '#', dtype=str)
         matriz_final[maze == 0] = ' '
         matriz_final[inicio_y, inicio_x] = 'A'
         matriz_final[fim_y, fim_x] = 'B'
@@ -144,9 +160,9 @@ class Maze:
             end = (fim_x, fim_y),
             cicles=cicles,
             collectibles=collectibles,
-            length=altura,
-            width=largura,
-            maze="\n".join(["".join(linha) for linha in matriz_final])
+            length=height,
+            width=width,
+            maze=matriz_final.tolist()
         )
 
     @classmethod
@@ -179,12 +195,8 @@ class Maze:
         # 3. Lê a estrutura do labirinto a partir do arquivo .txt
         with open(caminho_txt, "r", encoding="utf-8") as arquivo_txt:
             conteudo_txt = arquivo_txt.read()
-            try:
-                # Converte a string do labirinto (ex: "[[0, 1], [1, 0]]") de volta para uma lista Python
-                maze_estrutura = ast.literal_eval(conteudo_txt)
-            except (ValueError, SyntaxError):
-                # Caso falhe (ex: se o txt contiver texto puro em vez de formato de lista), mantém como string
-                maze_estrutura = conteudo_txt
+            # Converte as linhas de string de volta para uma lista de listas (vetor)
+            maze_vetor = [list(linha) for list_linha in conteudo_txt.split("\n") if (linha := list_linha.strip())]
 
         # 4. Instancia e retorna o objeto Maze reconstruído
         start_tuple = ast.literal_eval(str(dados["start"])) if "start" in dados else (1, 1)
@@ -196,7 +208,7 @@ class Maze:
             length=int(dados["length"]),
             collectibles=int(dados["collectibles"]),
             cicles=float(dados["cicles"]),
-            maze=maze_estrutura,
+            maze=maze_vetor,
             id=str(dados["id"]),
             start=start_tuple,
             end=end_tuple,

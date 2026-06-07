@@ -38,6 +38,7 @@ class GerenciadorDeBusca:
         
         # 2. CHAMADA NOVA: Passa só o objeto e recebe só o relatório de volta
         relatorio = funcao_busca(maze_obj)
+        print(relatorio.caminho)
         
         # Extrai o caminho de dentro do relatório (caso o menu precise para desenhar)
         caminho = getattr(relatorio, 'caminho', None)
@@ -52,4 +53,6 @@ class GerenciadorDeBusca:
              relatorio.salvarResultado()
              print(f"[{nome_algoritmo}] Resultados salvos no CSV com sucesso.")
 
-        return caminho, relatorio
+        relatorio.caminho = caminho
+
+        return relatorio
