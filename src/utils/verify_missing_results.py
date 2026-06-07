@@ -3,6 +3,7 @@ from src.utils.Maze import Maze
 from src.utils.resultados.resultado_ucs import ResultadoUCS
 from src.utils.resultados.resultado_bfs import ResultadoBFS
 from src.utils.resultados.resultado_a_star import ResultadoAStar
+from src.utils.buscas.online.online_a_star import ResultadoOnlineAStar
 from src.utils.resultados.resultado_guloso import ResultadoGuloso
 from src.utils.resultados.resultado_dfs import ResultadoDFS
 
@@ -16,7 +17,7 @@ def verify_missing_results():
         "BFS": ResultadoBFS,
         "GULOSA": ResultadoGuloso,
         "ASTAR": ResultadoAStar,
-        # "ONLINE_ASTAR": ResultadoAStar
+        "ONLINE_A*": ResultadoOnlineAStar
     }
 
     ids_por_metodo = {}

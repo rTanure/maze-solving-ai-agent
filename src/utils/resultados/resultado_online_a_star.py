@@ -1,7 +1,5 @@
 from src.utils.resultados.resultado import Resultado
 from src.utils.get_dataframe import get_dataframe
-import pandas as pd
-import os
 
 class ResultadoOnlineAStar(Resultado):
     def __init__(self, maze_id):
@@ -12,6 +10,7 @@ class ResultadoOnlineAStar(Resultado):
         
     def _getResultado(self):
         base = super()._getResultado()
+        
         base.update({
             "celulas_reveladas": [self.celulas_reveladas],
             "celulas_revisitadas": [self.celulas_revisitadas],
@@ -21,6 +20,10 @@ class ResultadoOnlineAStar(Resultado):
 
     def salvarResultado(self):
         self._salvaResultado(
-            "datasets/resultado_online_astar.csv",
+            "datasets/resultado_online_a_star.csv",
             {}
         )
+        
+    @staticmethod
+    def get_df():
+        return get_dataframe("datasets/resultado_online_a_star.csv")
