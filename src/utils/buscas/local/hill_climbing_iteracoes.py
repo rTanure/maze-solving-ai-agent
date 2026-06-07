@@ -47,7 +47,7 @@ def rodar_bateria_hill_climbing(maze_obj, num_execucoes=100 ):
     
     # 5. Salva automaticamente a melhor execução no CSV para você gerar o gráfico depois!
     if hasattr(melhor_execucao, 'salvarResultado'):
-        melhor_execucao.salvarResultado(id_labirinto=maze_obj.id)
+        melhor_execucao.salvarResultado()
         print(f"\n💾 Melhor curva de convergência salva no CSV com sucesso (ID: {maze_obj.id})!")
     
     return melhor_execucao

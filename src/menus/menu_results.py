@@ -24,7 +24,11 @@ def menu_results():
         temp_inicial_str = questionary.text("Temperadura inicial do simulated annealing (padrão 1000):").ask()
         taxa_resfriamento_str = questionary.text("Taxa de resfriamento do simulated annealing (padrão 3):").ask()
         temp_inicial = int(temp_inicial_str) if temp_inicial_str else 1000
-        taxa_resfriamento = int(taxa_resfriamento_str) if taxa_resfriamento_str else 3
+        taxa_resfriamento = (
+            float(taxa_resfriamento_str)
+            if taxa_resfriamento_str
+            else 0.95
+        )
 
     run_missing_results(
         missing_results = missing_results,

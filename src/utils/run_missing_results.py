@@ -17,6 +17,10 @@ def run_missing_results(missing_results, *args, **kwargs):
     for maze_id, missing_algorithms in missing_results.items():
         maze = Maze.open(maze_id)
 
+        if maze is None:
+            print(f"Labirinto {maze_id} não encontrado. Pulando...")
+            continue
+
         for algorithm in missing_algorithms:
             progresso_atual += 1
             porcentagem = (progresso_atual / total_tarefas) * 100

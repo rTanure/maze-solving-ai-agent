@@ -8,7 +8,7 @@ def rodar_bateria_simulated_annealing(maze_obj, num_execucoes, temp_inicial, tax
     
     resultados = []
     
-    print(f"⏳ Rodando {num_execucoes} simulações de Hill Climbing. Aguarde...")
+    print(f"⏳ Rodando {num_execucoes} simulações de SA. Aguarde...")
     
     for _ in range(num_execucoes):
         # 2. Chama a nova função orientada a objetos
@@ -30,7 +30,7 @@ def rodar_bateria_simulated_annealing(maze_obj, num_execucoes, temp_inicial, tax
     sucessos = sum(1 for c in custos if c <= margem_aceitavel)
     taxa_sucesso = (sucessos / num_execucoes) * 100
     
-    print("\n--- 📊 RESULTADOS DO HILL CLIMBING (100 Execuções) ---")
+    print("\n--- 📊 RESULTADOS DO SA (100 Execuções) ---")
     print(f"Melhor Custo Encontrado: {melhor_custo}")
     print(f"Pior Custo Encontrado: {pior_custo}")
     print(f"Custo Médio: {custo_medio:.2f}")
@@ -47,7 +47,7 @@ def rodar_bateria_simulated_annealing(maze_obj, num_execucoes, temp_inicial, tax
     
     # 5. Salva automaticamente a melhor execução no CSV para você gerar o gráfico depois!
     if hasattr(melhor_execucao, 'salvarResultado'):
-        melhor_execucao.salvarResultado(id_labirinto=maze_obj.id)
+        melhor_execucao.salvarResultado()
         print(f"\n💾 Melhor curva de convergência salva no CSV com sucesso (ID: {maze_obj.id})!")
     
     return melhor_execucao

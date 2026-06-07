@@ -19,6 +19,7 @@ from src.utils.resultados.resultado_hill_climbing import ResultadoHillClimbing
 from src.utils.buscas.local.hill_climbing import hill_climbing
 from src.utils.buscas.local.simulated_annealing import simulated_annealing
 from src.utils.buscas.local.simulated_annealing_iteracoes import rodar_bateria_simulated_annealing
+from src.utils.buscas.local.hill_climbing_iteracoes import rodar_bateria_hill_climbing
 
 class GerenciadorDeBusca:
     def __init__(self):
@@ -29,7 +30,7 @@ class GerenciadorDeBusca:
             'GULOSA': {'funcao': busca_gulosa, 'classe_resultado': ResultadoGuloso},
             'ASTAR': {'funcao': a_star, 'classe_resultado': ResultadoAStar},
             'ONLINE_A*': {'funcao': online_a_star, 'classe_resultado': ResultadoOnlineAStar},
-            'HILL_CLIMBING': {'funcao': hill_climbing, 'classe_resultado': ResultadoHillClimbing},
+            'HILL_CLIMBING': {'funcao': rodar_bateria_hill_climbing, 'classe_resultado': ResultadoHillClimbing},
             'SIMULATED_ANNEALING': {'funcao': rodar_bateria_simulated_annealing, 'classe_resultado': ResultadoSimulatedAnnealing}
         }
 
@@ -76,6 +77,8 @@ class GerenciadorDeBusca:
             
         # 3. SALVAR RESULTADO COM ID INTELIGENTE
         if hasattr(relatorio, 'salvarResultado'):
+             print("ORDEM:", getattr(relatorio, "ordem_coletaveis", None))
+             print("ROTA :", getattr(relatorio, "rota_macro", None))
              relatorio.salvarResultado()
              print(f"[{nome_algoritmo}] Resultados salvos no CSV com sucesso.")
 
