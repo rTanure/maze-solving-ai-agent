@@ -8,7 +8,7 @@ def busca_gulosa(maze_obj):
    
     # Extraindo dados do objeto Maze
     grid = maze_obj.maze
-    inicio, objetivo = encontrar_inicio_fim(grid)
+    inicio, objetivo = encontrar_inicio_fim(maze_obj)
    
     fila_prioridade = [(heuristica_manhattan(inicio, objetivo), inicio, [inicio])]
     visitados = set()

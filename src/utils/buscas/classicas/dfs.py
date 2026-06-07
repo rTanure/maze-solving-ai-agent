@@ -7,7 +7,7 @@ def dfs(maze_obj):
 
     # Extraindo dados do objeto Maze
     grid = maze_obj.maze
-    inicio, objetivo = encontrar_inicio_fim(grid)
+    inicio, objetivo = encontrar_inicio_fim(maze_obj)
 
     pilha = [(inicio, [inicio])]
     visitados = set()

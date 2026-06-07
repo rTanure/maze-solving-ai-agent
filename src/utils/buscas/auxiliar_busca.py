@@ -30,11 +30,10 @@ def get_vizinhos(grid, no):
 def heuristica_manhattan(no1, no2):
     return abs(no1[0] - no2[0]) + abs(no1[1] - no2[1])
 
-def encontrar_inicio_fim(grid):
-    inicio = None
-    objetivo = None
-    for y, linha in enumerate(grid):
-        for x, char in enumerate(linha):
-            if char == 'A': inicio = (y, x)
-            elif char == 'B': objetivo = (y, x)
-    return inicio, objetivo
+def encontrar_inicio_fim(maze_obj):
+    # Extrai o X e Y da tupla que veio do Maze
+    start_x, start_y = maze_obj.start
+    end_x, end_y = maze_obj.end
+    
+    # Retorna invertido (y, x) para os algoritmos usarem na grid
+    return (start_y, start_x), (end_y, end_x)

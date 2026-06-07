@@ -1,17 +1,24 @@
-from src.utils.buscas.local.hill_climbing import executar_hill_climbing_tsp
+from src.utils.buscas.local.hill_climbing import hill_climbing
 
-def rodar_bateria_hill_climbing(matriz_distancias, pontos_dict, num_execucoes=100):
-    lista_coletaveis = [p for p in pontos_dict.keys() if p.startswith('C')]
+# 1. Nova assinatura: recebe o objeto do labirinto e a maleta de dados
+def rodar_bateria_hill_climbing(maze_obj, dados_adicionais, num_execucoes=100):
+    
+    # A lista de coletáveis já vem pronta dentro dos dados_adicionais
+    # (nós montamos ela no menu antes de chamar essa função)
     
     resultados = []
     
+    print(f"⏳ Rodando {num_execucoes} simulações de Hill Climbing. Aguarde...")
+    
     for _ in range(num_execucoes):
-        res = executar_hill_climbing_tsp(matriz_distancias, lista_coletaveis)
+        # 2. Chama a nova função orientada a objetos
+        res = hill_climbing(maze_obj, dados_adicionais)
         resultados.append(res)
         
-    custos = [r['custo'] for r in resultados]
-    tempos = [r['tempo_s'] for r in resultados]
-    iteracoes = [r['iteracoes'] for r in resultados]
+    # 3. Acesso aos dados como atributos do objeto (r.atributo)
+    custos = [r.custo for r in resultados]
+    tempos = [r.tempo_s for r in resultados]
+    iteracoes = [r.iteracoes for r in resultados]
     
     melhor_custo = min(custos)
     pior_custo = max(custos)
@@ -31,7 +38,16 @@ def rodar_bateria_hill_climbing(matriz_distancias, pontos_dict, num_execucoes=10
     print(f"Iterações Médias: {iteracoes_media:.2f}")
     print(f"Taxa de Sucesso (margem 5%): {taxa_sucesso:.1f}%")
     print("\nMelhor Rota Encontrada:")
-    melhor_execucao = next(r for r in resultados if r['custo'] == melhor_custo)
-    print(" -> ".join(melhor_execucao['rota']))
     
-    return melhor_execucao 
+    # Pega o objeto da melhor execução
+    melhor_execucao = next(r for r in resultados if r.custo == melhor_custo)
+    
+    # 4. Converte a rota_macro (que tem tuplas) para string para poder imprimir
+    print(" -> ".join(map(str, melhor_execucao.rota_macro)))
+    
+    # 5. Salva automaticamente a melhor execução no CSV para você gerar o gráfico depois!
+    if hasattr(melhor_execucao, 'salvarResultado'):
+        melhor_execucao.salvarResultado(id_labirinto=maze_obj.id)
+        print(f"\n💾 Melhor curva de convergência salva no CSV com sucesso (ID: {maze_obj.id})!")
+    
+    return melhor_execucao

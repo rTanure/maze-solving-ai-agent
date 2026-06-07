@@ -2,13 +2,18 @@ import heapq
 from src.utils.buscas.auxiliar_busca import get_vizinhos, encontrar_inicio_fim
 from src.utils.resultados.resultado_ucs import ResultadoUCS
 
-def ucs(maze_obj):
+def ucs(maze_obj, dados_adicionais = None):
     resultado = ResultadoUCS(maze_obj.id)
     resultado.start()
 
     # Extraindo dados do objeto Maze
     grid = maze_obj.maze
-    inicio, objetivo = encontrar_inicio_fim(grid)
+
+    if dados_adicionais and 'inicio_override' in dados_adicionais:
+        inicio = dados_adicionais['inicio_override']
+        objetivo = dados_adicionais['objetivo_override']
+    else:
+        inicio, objetivo = encontrar_inicio_fim(maze_obj)
 
     fila_prioridade = [(0, inicio, [inicio])]
     visitados = set()
