@@ -10,7 +10,6 @@ def menu_principal():
   limpar_terminal()
   
   choices = {
-    "Gerar labirinto": lambda: (print("TODO"), False)[1],
     "Gerar em lote": lambda: (menu_gerar_labirintos_lotes(), False)[1],
     "Simular labirinto temporario": lambda: (menu_simulacao_temporaria(), False)[1],
     "Executar exprimentos": lambda: (menu_results(), False)[1],
