@@ -11,7 +11,6 @@ def menu_principal():
   
   # O dicionário agora guarda funções normais ou lambdas que retornam um booleano (True para sair)
   choices = {
-    "Gerar labirinto": lambda: (print("TODO"), False)[1],
     "Gerar em lote": lambda: (menu_gerar_labirintos_lotes(), False)[1],
     "Simular labirinto temporario": lambda: (menu_simulacao_temporaria(), False)[1],
     "Executar exprimentos": lambda: (menu_results(), False)[1],
