@@ -4,15 +4,9 @@ from src.utils.resultados.resultado_online_a_star import ResultadoOnlineAStar
 
 def _a_star_replanejamento(grid_interno, inicio, objetivo, resultado_tracker):
     h_inicio = heuristica_manhattan(inicio, objetivo)
-    
-    # OTIMIZAÇÃO 1: Retiramos a lista 'caminho' de dentro da tupla. 
-    # A tupla agora é muito mais leve: (f_cost, g_cost, atual)
     fila_prioridade = [(h_inicio, 0, inicio)]
-    
-    # Dicionários para controle de custo e para reconstruir o caminho sem estourar a RAM
     g_costs = {inicio: 0}
     came_from = {inicio: None}
-    
     resultado_tracker.addfronteira(1)
     
     while fila_prioridade:
@@ -23,28 +17,23 @@ def _a_star_replanejamento(grid_interno, inicio, objetivo, resultado_tracker):
         resultado_tracker.addExpandidos(1)
         
         if atual == objetivo:
-            # Reconstrói o caminho de trás pra frente através dos ponteiros
             caminho = []
             passo = atual
             while passo is not None:
                 caminho.append(passo)
                 passo = came_from[passo]
-            return caminho[::-1] # Inverte a lista para ficar do Início -> Fim
+            return caminho[::-1]
             
-        # Pula processamento de nós obsoletos se já achamos uma rota mais barata pra eles
         if g_cost > g_costs.get(atual, float('inf')):
             continue
             
         for vizinho in get_vizinhos(grid_interno, atual):
             novo_g = g_cost + 1
-            
-            # Só adiciona na fila se for um caminho melhor para aquele vizinho
             if novo_g < g_costs.get(vizinho, float('inf')):
                 g_costs[vizinho] = novo_g
                 novo_f = novo_g + heuristica_manhattan(vizinho, objetivo)
-                
                 heapq.heappush(fila_prioridade, (novo_f, novo_g, vizinho))
-                came_from[vizinho] = atual # Vizinho 'lembra' quem é o pai dele
+                came_from[vizinho] = atual
                 resultado_tracker.addfronteira(1)
                     
     return None
@@ -99,6 +88,8 @@ def online_a_star(maze_obj, dados_adicionais=None):
         
         if not caminho_planejado or len(caminho_planejado) < 2:
             resultado.caminho = caminho_percorrido
+            resultado.custo = len(caminho_percorrido) - 1
+            resultado.custo_real = len(caminho_percorrido) - 1
             resultado.finish()
             return resultado 
                 
@@ -124,6 +115,11 @@ def online_a_star(maze_obj, dados_adicionais=None):
         
     resultado.sucesso = True
     resultado.caminho = caminho_percorrido
+    
+    resultado.custo = len(caminho_percorrido) - 1 
+    resultado.custo_real = len(caminho_percorrido) - 1 
+    resultado.grid_interno = grid_interno
+    
     resultado.finish()
     
     return resultado

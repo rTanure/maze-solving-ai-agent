@@ -7,6 +7,8 @@ class ResultadoOnlineAStar(Resultado):
         self.celulas_reveladas = 0
         self.celulas_revisitadas = 0
         self.replanejamentos = 0
+        self.custo_real = 0
+        self.grid_interno
         
     def _getResultado(self):
         base = super()._getResultado()
@@ -14,7 +16,8 @@ class ResultadoOnlineAStar(Resultado):
         base.update({
             "celulas_reveladas": [self.celulas_reveladas],
             "celulas_revisitadas": [self.celulas_revisitadas],
-            "replanejamentos": [self.replanejamentos]
+            "replanejamentos": [self.replanejamentos],
+            "custo_real": [self.custo_real]
         })
         return base
 
