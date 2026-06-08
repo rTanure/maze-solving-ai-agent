@@ -9,7 +9,6 @@ from src.menus.menu_simulacao import menu_simulacao_temporaria
 def menu_principal():
   limpar_terminal()
   
-  # O dicionário agora guarda funções normais ou lambdas que retornam um booleano (True para sair)
   choices = {
     "Gerar labirinto": lambda: (print("TODO"), False)[1],
     "Gerar em lote": lambda: (menu_gerar_labirintos_lotes(), False)[1],
@@ -21,9 +20,7 @@ def menu_principal():
 
   escolha = questionary.select("Escolha uma opção:", choices=list(choices.keys())).ask()
 
-  # Executa a ação e armazena se o usuário pediu para sair ou não
   deve_sair = choices.get(escolha, lambda: False)()
   
-  # Se não pediu para sair, continua o menu. Se pediu, a função termina aqui.
   if not deve_sair: 
     menu_principal()

@@ -21,31 +21,27 @@ def a_star(maze_obj, dados_adicionais=None):
         
     h_inicio = heuristica_manhattan(inicio, objetivo)
     
-    # Fila de prioridade: (f_cost, g_cost, atual, caminho)
     fila_prioridade = [(h_inicio, 0, inicio, [inicio])]
     visitados = set()
     
     resultado.addfronteira(1)
     
     while fila_prioridade:
-        # Registra tamanho máximo da fronteira no exato momento
         if len(fila_prioridade) > resultado.fronteira:
             resultado.fronteira = len(fila_prioridade)
             
         _, g_cost, atual, caminho = heapq.heappop(fila_prioridade)
         resultado.addExpandidos(1)
         
-        # Teste de objetivo
         if atual == objetivo:
             resultado.sucesso = True
             resultado.passos = len(caminho)
             resultado.custo = g_cost
-            resultado.caminho = caminho # Salvando no objeto
+            resultado.caminho = caminho 
             resultado.finish()
             
-            return resultado # Retornando apenas o objeto atualizado
+            return resultado 
             
-        # Expansão
         if atual not in visitados:
             visitados.add(atual)
             

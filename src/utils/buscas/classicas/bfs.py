@@ -6,7 +6,6 @@ def bfs(maze_obj):
     resultado = ResultadoBFS(maze_obj.id)
     resultado.start()
     
-    # Extraindo dados do objeto Maze
     grid = maze_obj.maze
     inicio, objetivo = encontrar_inicio_fim(maze_obj)
     
@@ -22,10 +21,10 @@ def bfs(maze_obj):
             resultado.sucesso = True
             resultado.passos = len(caminho)
             resultado.custo = len(caminho) - 1 
-            resultado.caminho = caminho # Salvando no objeto
+            resultado.caminho = caminho 
             resultado.finish()
             
-            return resultado # Retornando apenas o objeto
+            return resultado 
             
         for vizinho in get_vizinhos(grid, atual):
             if vizinho not in visitados:

@@ -6,7 +6,6 @@ def busca_gulosa(maze_obj):
     resultado = ResultadoGuloso(maze_obj.id)
     resultado.start()
    
-    # Extraindo dados do objeto Maze
     grid = maze_obj.maze
     inicio, objetivo = encontrar_inicio_fim(maze_obj)
    
@@ -24,10 +23,10 @@ def busca_gulosa(maze_obj):
             resultado.sucesso = True
             resultado.passos = len(caminho)
             resultado.custo = len(caminho) - 1
-            resultado.caminho = caminho # Salvando no objeto
+            resultado.caminho = caminho 
             resultado.finish()
 
-            return resultado # Retornando apenas o objeto
+            return resultado 
             
         if atual not in visitados:
             visitados.add(atual)

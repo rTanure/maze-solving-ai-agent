@@ -25,7 +25,6 @@ def gerar_vizinhos_por_troca(ordem_atual):
     return vizinhos
 
 def hill_climbing(maze_obj):
-    # 1. INICIALIZA O RESULTADO AQUI (faltava no seu snippet!)
     resultado = ResultadoHillClimbing(maze_obj.id)
     resultado.start()
 
@@ -34,7 +33,6 @@ def hill_climbing(maze_obj):
 
 
     lista_coletaveis = [k for k in pontos.keys() if isinstance(k, tuple)]
-    # ---------------------------------------------------
 
     estado_atual = lista_coletaveis[:]
     random.shuffle(estado_atual)
@@ -68,41 +66,33 @@ def hill_climbing(maze_obj):
 
     resultado.finish()
 
-    # --- PREENCHENDO OS DADOS ESTATÍSTICOS ---
     resultado.sucesso = True
     resultado.custo = custo_atual
     resultado.passos = iteracoes
     resultado.iteracoes = iteracoes
     resultado.curva = curva_convergencia
     
-    # Salva a ordem exata dos coletáveis encontrados. Ex: [(1, 3), (5, 2)]
     resultado.ordem_coletaveis = estado_atual 
     
-    # A rota macro inclui o Início e o Fim. Ex: ['A', (1, 3), (5, 2), 'B']
     rota_macro = ['A'] + estado_atual + ['B']
     resultado.rota_macro = rota_macro
 
-    # --- COSTURANDO O CAMINHO COMPLETO DE COORDENADAS ---
     if matriz_caminhos:
         caminho_completo = []
         for i in range(len(rota_macro) - 1):
             origem = rota_macro[i]
             destino = rota_macro[i+1]
             
-            # Pega a lista de coordenadas contínuas daquele trecho específico
             trecho = matriz_caminhos[origem][destino]
             
-            # Removemos a primeira coordenada dos trechos seguintes para não duplicar
-            # (já que o final de um trecho é exatamente o início do próximo)
+            
             if i > 0 and len(trecho) > 0:
                 trecho = trecho[1:]
                 
             caminho_completo.extend(trecho)
             
-        # O .caminho final agora é uma lista gigante de (y, x) pronta para ser desenhada!
         resultado.caminho = caminho_completo
     else:
-        # Fallback de segurança se esquecer de mandar a matriz_caminhos
         resultado.caminho = rota_macro 
 
     return resultado

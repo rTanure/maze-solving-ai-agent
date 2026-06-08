@@ -8,7 +8,7 @@ from src.utils.buscas.local.hill_climbing import (
 )
 
 
-def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
+def simulated_annealing(maze_obj, temp_inicial, taxa_resfriamento):
 
     if taxa_resfriamento <= 0 or taxa_resfriamento >= 1:
         raise ValueError(
