@@ -142,7 +142,6 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
 
         delta = custo_candidato - custo_atual
 
-        curva_convergencia.append((iteracoes, custo_atual))
 
         if (
             delta < 0
@@ -157,10 +156,8 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
                 melhor_estado = estado_atual[:]
                 melhor_custo = custo_atual
 
-                curva_convergencia.append(
-                    (iteracoes, melhor_custo)
-                )
-
+                
+        curva_convergencia.append((iteracoes, custo_atual))
         temp *= taxa_resfriamento
 
     print("Saiu do loop principal")

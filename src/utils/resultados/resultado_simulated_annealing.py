@@ -14,30 +14,16 @@ class ResultadoSimulatedAnnealing(Resultado):
         self.rota_macro = []       
 
     def salvarResultado(self):
-        pasta_resultados = "datasets"
-        if not os.path.exists(pasta_resultados):
-            os.makedirs(pasta_resultados)
+        self._salvaResultado(
+            "datasets/resultados_simulated_annealing.csv",
+            {
+                "iteracoes": str(self.iteracoes),
+                "ordem_coletaveis": str(self.ordem_coletaveis), # Salvando os coletáveis!
+                "rota_macro": str(self.rota_macro),
+                "curva_convergencia": str(self.curva)
+            }   
+        )
 
-        caminho_csv = f"{pasta_resultados}/resultados_simulated_annealing.csv"
-        df = get_dataframe(caminho_csv)
-
-        novos_dados = {
-            "id_labirinto": self.maze_id,
-            "sucesso": self.sucesso,
-            "custo_final": self.custo,
-            "iteracoes": self.iteracoes,
-            "ordem_coletaveis": str(self.ordem_coletaveis), # Salvando os coletáveis!
-            "rota_macro": str(self.rota_macro),
-            "curva_convergencia": str(self.curva)
-        }
-
-        df_nova_linha = pd.DataFrame([novos_dados])
-        if df.empty:
-            df_atualizado = df_nova_linha
-        else:
-            df_atualizado = pd.concat([df, df_nova_linha], ignore_index=True)
-
-        df_atualizado.to_csv(caminho_csv, index=False)
-
-    def get_df(self):
+    @staticmethod
+    def get_df():
         return get_dataframe("datasets/resultados_simulated_annealing.csv")

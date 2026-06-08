@@ -23,7 +23,7 @@ def run_missing_results(missing_results, *args, **kwargs):
 
         for algorithm in missing_algorithms:
             if(maze.width * maze.length > 100000 and (algorithm == "ONLINE_A*")): continue
-            if(maze.width * maze.length > 250000 and (algorithm == "BFS")): continue
+            if(maze.width * maze.length > 250000 and (algorithm == "DFS")): continue
 
             progresso_atual += 1
             porcentagem = (progresso_atual / total_tarefas) * 100

@@ -10,11 +10,10 @@ from src.utils.resultados.resultado_simulated_annealing import ResultadoSimulate
 from src.utils.resultados.resultado_hill_climbing import ResultadoHillClimbing
 
 
+def verify_missing_results() -> dict[str, list[str]]:
+    ids_totais = {str(id_).strip().lower() for id_ in Maze.get_ids()}
 
-def verify_missing_results():
-    ids_totais = Maze.get_ids()
 
-    # Mapeamento dos métodos e suas respectivas classes de resultado
     metodos_busca = {
         "UCS": ResultadoUCS,
         "DFS": ResultadoDFS,
@@ -24,42 +23,46 @@ def verify_missing_results():
         "ONLINE_A*": ResultadoOnlineAStar,
         "SIMULATED_ANNEALING": ResultadoSimulatedAnnealing,
         "HILL_CLIMBING": ResultadoHillClimbing,
-        "SIMULATED_ANNEALING": ResultadoSimulatedAnnealing,
-        "HILL_CLIMBING": ResultadoHillClimbing
     }
 
     ids_por_metodo = {}
+    
 
-    # 1. Coleta os IDs existentes apenas de DataFrames válidos e populados
     for nome_metodo, classe_resultado in metodos_busca.items():
         try:
             df_resultado = classe_resultado.get_df()
             
-            # Se o df existir, não estiver vazio e contiver a coluna, extrai os IDs
             if df_resultado is not None and not df_resultado.empty and "maze_id" in df_resultado.columns:
-                ids_por_metodo[nome_metodo] = set(df_resultado["maze_id"].astype(str).values)
+                # Padronização para UUIDs:
+                # 1. Remove linhas nulas (.dropna)
+                # 2. Transforma tudo em string (.astype(str))
+                # 3. Remove espaços e força minúsculo (.str.strip().str.lower())
+                ids_existentes = (
+                    df_resultado["maze_id"]
+                    .dropna()
+                    .astype(str)
+                    .str.strip()
+                    .str.lower()
+                    .values
+                )
+                ids_por_metodo[nome_metodo] = set(ids_existentes)
             else:
-                # Se cair aqui (vazio/inexistente), assume conjunto vazio (falta em todos)
                 ids_por_metodo[nome_metodo] = set()
                 
         except Exception:
-            # Qualquer erro na leitura também assume que o método falta em todos
             ids_por_metodo[nome_metodo] = set()
 
-    # 2. Constrói o mapa de pendências
+
+    # Monta o relatório final comparando os UUIDs padronizados
     relatorio_faltantes = {}
-
+    
     for id_labirinto in ids_totais:
-        id_labirinto_str = str(id_labirinto)
-        metodos_faltantes = []
-
-        for nome_metodo in metodos_busca.keys():
-            # Se o conjunto estiver vazio ou o ID não estiver lá, entra como faltante
-            if id_labirinto_str not in ids_por_metodo[nome_metodo]:
-                metodos_faltantes.append(nome_metodo)
-
-        # Adiciona ao relatório se houver alguma pendência para o labirinto
+        metodos_faltantes = [
+            nome_metodo 
+            for nome_metodo, ids_salvos in ids_por_metodo.items() 
+            if id_labirinto not in ids_salvos
+        ]
+        
         if metodos_faltantes:
-            relatorio_faltantes[id_labirinto_str] = metodos_faltantes
-
+            relatorio_faltantes[id_labirinto] = metodos_faltantes
     return relatorio_faltantes
