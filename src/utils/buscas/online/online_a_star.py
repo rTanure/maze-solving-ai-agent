@@ -79,45 +79,38 @@ def online_a_star(maze_obj, dados_adicionais=None):
     celulas_conhecidas = {atual}
     visitados_fisicamente = {atual}
     
-    # OTIMIZAÇÃO 2: Variável para guardar o plano atual
-    caminho_planejado = []
-    
     while atual != objetivo:
         x, y = atual
         direcoes = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-        
-        caminho_bloqueado = False
         
         # FASE 1: Perceber
         for dx, dy in direcoes:
             nx, ny = x + dx, y + dy
             if 0 <= ny < altura and 0 <= nx < largura:
-                if (ny, nx) not in celulas_conhecidas:
+                if (nx, ny) not in celulas_conhecidas:
                     estado_real = grid_real[ny][nx]
                     grid_interno[ny][nx] = estado_real
-                    celulas_conhecidas.add((ny, nx))
+                    celulas_conhecidas.add((nx, ny))
                     resultado.celulas_reveladas += 1
-                    
-                    # Checagem Inteligente: Se descobrimos uma PAREDE e ela 
-                    # está exatamente na rota que eu ia seguir, meu caminho foi bloqueado!
-                    if estado_real == '#' and (ny, nx) in caminho_planejado:
-                        caminho_bloqueado = True
 
         # FASE 2: Planejar
-        # Replaneja APENAS SE: Não temos plano ainda, ou se a parede cortou nosso plano
-        if not caminho_planejado or caminho_bloqueado:
-            resultado.replanejamentos += 1
-            caminho_planejado = _a_star_replanejamento(grid_interno, atual, objetivo, resultado)
-            
-            if not caminho_planejado or len(caminho_planejado) < 2:
-                resultado.caminho = caminho_percorrido
-                resultado.finish()
-                return resultado 
+        resultado.replanejamentos += 1
+        caminho_planejado = _a_star_replanejamento(grid_interno, atual, objetivo, resultado)
+        
+        if not caminho_planejado or len(caminho_planejado) < 2:
+            resultado.caminho = caminho_percorrido
+            resultado.finish()
+            return resultado 
                 
         # FASE 3: Agir
-        # Pega a posição de onde estamos no plano, e dá o próximo passo
-        indice_atual = caminho_planejado.index(atual)
-        proximo_passo = caminho_planejado[indice_atual + 1]
+        proximo_passo = caminho_planejado[1]
+        proximo_x, proximo_y = proximo_passo
+
+        if grid_real[proximo_y][proximo_x] == '#':
+            grid_interno[proximo_y][proximo_x] = '#'
+            celulas_conhecidas.add(proximo_passo)
+            resultado.celulas_reveladas += 1
+            continue
         
         if proximo_passo in visitados_fisicamente:
             resultado.celulas_revisitadas += 1

@@ -25,6 +25,8 @@ ALGORITMOS = {
     "Simulated Annealing": simulated_annealing,
 }
 
+ALGORITMOS_COM_COLETAVEIS = {"Hill Climbing", "Simulated Annealing"}
+
 
 def _ler_inteiro(mensagem, padrao, minimo=None):
     valor = questionary.text(f"{mensagem} (padrao {padrao}):").ask()
@@ -94,6 +96,24 @@ def _renderizar_frame(grid, caminho, indice_atual, reveladas):
         linhas.append("".join(chars))
 
     return "\n".join(linhas)
+
+
+def _maze_tratando_coletaveis_como_livres(maze):
+    grid = [
+        [" " if celula == "C" else celula for celula in linha]
+        for linha in maze.maze
+    ]
+
+    return Maze(
+        width=maze.width,
+        length=maze.length,
+        collectibles=0,
+        cicles=maze.cicles,
+        maze=grid,
+        start=maze.start,
+        end=maze.end,
+        id=maze.id,
+    )
 
 
 def animar_resultado(maze, resultado, algoritmo, atraso=0.08, raio_percepcao=1):
@@ -190,6 +210,9 @@ def menu_simulacao_temporaria():
     raio_percepcao = 1
     if algoritmo == "Online A*":
         raio_percepcao = _ler_inteiro("Raio de percepcao da simulacao", 1, minimo=0)
+
+    if algoritmo not in ALGORITMOS_COM_COLETAVEIS:
+        maze = _maze_tratando_coletaveis_como_livres(maze)
 
     limpar_terminal()
     print(f"Executando {algoritmo}. Aguarde...")
