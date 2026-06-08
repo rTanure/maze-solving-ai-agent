@@ -55,14 +55,19 @@ class Resultado(ABC):
 
         pasta = os.path.dirname(file)
         if pasta and not os.path.exists(pasta):
-            os.makedirs(pasta)
-
-        if os.path.exists(file):
-            df_atual = pd.read_csv(file)
-            df_concat = pd.concat([df_atual, df_dados], ignore_index=True)
+            os.makedirs(pasta, exist_ok=True) 
+        # Se o arquivo existe e não está vazio, faz o append correto
+        if os.path.exists(file) and os.path.getsize(file) > 0:
+            try:
+                df_atual = pd.read_csv(file)
+                df_concat = pd.concat([df_atual, df_dados], ignore_index=True)
+            except Exception:
+                # Caso o arquivo esteja corrompido de alguma forma anterior, resguarda os dados novos
+                df_concat = df_dados
         else:
             df_concat = df_dados
 
+        # Salva o arquivo finalizado
         df_concat.to_csv(file, index=False)
         
 

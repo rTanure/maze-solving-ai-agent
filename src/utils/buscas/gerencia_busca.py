@@ -41,6 +41,8 @@ class GerenciadorDeBusca:
         if nome_algoritmo not in self.algoritmos:
             raise ValueError(f"Algoritmo '{nome_algoritmo}' não suportado. Opções válidas: {list(self.algoritmos.keys())}")
 
+        file_lock = kwargs.pop('file_lock', None)
+
         referencia = self.algoritmos[nome_algoritmo]
         funcao_busca = referencia['funcao']
 
@@ -67,4 +69,10 @@ class GerenciadorDeBusca:
                 relatorios = [funcao_busca(maze_obj)]
         
         # 3. SALVAR RESULTADO COM ID INTELIGENTE
-        for relatorio in relatorios: relatorio.salvarResultado()
+        if file_lock is not None:
+            with file_lock:
+                for relatorio in relatorios: 
+                    relatorio.salvarResultado()
+        else:
+            for relatorio in relatorios: 
+                relatorio.salvarResultado()

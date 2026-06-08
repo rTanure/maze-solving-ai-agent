@@ -16,26 +16,20 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
             "Ela deve estar entre 0 e 1."
         )
 
-    print("\n=== INICIO SIMULATED ANNEALING ===")
 
     resultado = ResultadoSimulatedAnnealing(maze_obj.id)
     resultado.start()
 
     from src.utils.menor_caminho import obter_grafo
 
-    print("Obtendo grafo...")
     matriz_distancias, matriz_caminhos, pontos = obter_grafo(maze_obj)
 
-    print("Grafo obtido")
-    print("Quantidade de pontos:", len(pontos))
 
     lista_coletaveis = [
         k for k in pontos.keys()
         if isinstance(k, tuple)
     ]
 
-    print("Quantidade de coletáveis:", len(lista_coletaveis))
-    print("Coletáveis:", lista_coletaveis)
 
     # =====================================================
     # CASO ESPECIAL
@@ -43,7 +37,6 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
 
     if len(lista_coletaveis) <= 1:
 
-        print("Entrou no caso especial <= 1 coletável")
 
         custo = calcular_custo_rota(
             lista_coletaveis,
@@ -84,26 +77,22 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
         else:
             resultado.caminho = rota_macro
 
-        print("Fim caso especial")
         return resultado
 
     # =====================================================
     # ESTADO INICIAL
     # =====================================================
 
-    print("Criando estado inicial...")
 
     estado_atual = lista_coletaveis[:]
     random.shuffle(estado_atual)
 
-    print("Estado inicial criado")
 
     custo_atual = calcular_custo_rota(
         estado_atual,
         matriz_distancias
     )
 
-    print("Custo inicial:", custo_atual)
 
     melhor_estado = estado_atual[:]
     melhor_custo = custo_atual
@@ -160,9 +149,6 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
         curva_convergencia.append((iteracoes, custo_atual))
         temp *= taxa_resfriamento
 
-    print("Saiu do loop principal")
-    print("Iterações:", iteracoes)
-    print("Melhor custo:", melhor_custo)
 
     resultado.finish()
 
@@ -177,7 +163,6 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
     rota_macro = ['A'] + melhor_estado + ['B']
     resultado.rota_macro = rota_macro
 
-    print("Montando caminho completo...")
 
     if matriz_caminhos:
 
@@ -188,7 +173,6 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
             origem = rota_macro[i]
             destino = rota_macro[i + 1]
 
-            print(f"Trecho {origem} -> {destino}")
 
             trecho = matriz_caminhos[origem][destino]
 
@@ -202,7 +186,5 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
     else:
         resultado.caminho = rota_macro
 
-    print("Caminho completo montado")
-    print("=== FIM SIMULATED ANNEALING ===\n")
 
     return resultado

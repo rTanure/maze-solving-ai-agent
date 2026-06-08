@@ -27,7 +27,6 @@ def matriz_distancias(maze_obj):
     start_original = maze_obj.start
     end_original = maze_obj.end
 
-    print(f"Quantidade de pontos: {len(chaves)}")
     for i in range(len(chaves)):
         for j in range(i + 1, len(chaves)):
             origem_id = chaves[i]
@@ -40,10 +39,6 @@ def matriz_distancias(maze_obj):
             maze_obj.end = coord_destino
 
             resultado = ucs(maze_obj)
-            if not resultado.sucesso:
-                print(
-                    f"Falhou: {origem_id} -> {destino_id}"
-                )
 
             custo = resultado.custo if resultado.sucesso else float('inf')
             caminho = resultado.caminho if resultado.sucesso else []
@@ -65,14 +60,11 @@ _CACHE_GRAFOS = {}
 
 def obter_grafo(maze_obj):
     if maze_obj.id in _CACHE_GRAFOS:
-        print("CACHE HIT")
         return _CACHE_GRAFOS[maze_obj.id]
 
-    print("CACHE MISS")
 
     matriz, caminhos, pontos = matriz_distancias(maze_obj)
 
-    print("MATRIZ CALCULADA")
 
     _CACHE_GRAFOS[maze_obj.id] = (matriz, caminhos, pontos)
 
