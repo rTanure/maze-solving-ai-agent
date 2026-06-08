@@ -1,7 +1,7 @@
 from src.utils.buscas.local.simulated_annealing import simulated_annealing
 
 # 1. Nova assinatura: recebe o objeto do labirinto e a maleta de dados
-def rodar_bateria_simulated_annealing(maze_obj, num_execucoes, temp_inicial, taxa_resfriamento):
+def rodar_bateria_simulated_annealing(maze_obj, num_execucoes=100, temp_inicial = 1000, taxa_resfriamento = 0.95):
     
     # A lista de coletáveis já vem pronta dentro dos dados_adicionais
     # (nós montamos ela no menu antes de chamar essa função)
@@ -41,6 +41,12 @@ def rodar_bateria_simulated_annealing(maze_obj, num_execucoes, temp_inicial, tax
     
     # Pega o objeto da melhor execução
     melhor_execucao = next(r for r in resultados if r.custo == melhor_custo)
+
+    melhor_execucao.pior_custo = pior_custo
+    melhor_execucao.custo_medio = custo_medio
+    melhor_execucao.tempo_medio = tempo_medio
+    melhor_execucao.iteracoes_media = iteracoes_media
+    melhor_execucao.taxa_sucesso = taxa_sucesso
     
     # 4. Converte a rota_macro (que tem tuplas) para string para poder imprimir
     print(" -> ".join(map(str, melhor_execucao.rota_macro)))

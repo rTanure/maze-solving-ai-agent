@@ -31,10 +31,6 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
     ]
 
 
-    # =====================================================
-    # CASO ESPECIAL
-    # =====================================================
-
     if len(lista_coletaveis) <= 1:
 
 
@@ -78,10 +74,6 @@ def simulated_annealing(maze_obj, temp_inicial=1000, taxa_resfriamento=0.7):
             resultado.caminho = rota_macro
 
         return resultado
-
-    # =====================================================
-    # ESTADO INICIAL
-    # =====================================================
 
 
     estado_atual = lista_coletaveis[:]

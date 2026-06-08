@@ -21,7 +21,7 @@ def menu_results():
 
     if "SIMULATED_ANNEALING" in algorithm_set:
         temp_inicial_str = questionary.text("Temperadura inicial do simulated annealing (padrão 1000):").ask()
-        taxa_resfriamento_str = questionary.text("Taxa de resfriamento do simulated annealing (padrão 3):").ask()
+        taxa_resfriamento_str = questionary.text("Taxa de resfriamento do simulated annealing (padrão 0.95):").ask()
         temp_inicial = int(temp_inicial_str) if temp_inicial_str else 1000
         taxa_resfriamento = (
             float(taxa_resfriamento_str)

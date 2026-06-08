@@ -30,8 +30,8 @@ class GerenciadorDeBusca:
             'GULOSA': {'funcao': busca_gulosa, 'classe_resultado': ResultadoGuloso},
             'ASTAR': {'funcao': a_star, 'classe_resultado': ResultadoAStar},
             'ONLINE_A*': {'funcao': online_a_star, 'classe_resultado': ResultadoOnlineAStar},
-            'HILL_CLIMBING': {'funcao': hill_climbing, 'classe_resultado': ResultadoHillClimbing},
-            'SIMULATED_ANNEALING': {'funcao': simulated_annealing, 'classe_resultado': ResultadoSimulatedAnnealing}
+            'HILL_CLIMBING': {'funcao': rodar_bateria_hill_climbing, 'classe_resultado': ResultadoHillClimbing},
+            'SIMULATED_ANNEALING': {'funcao': rodar_bateria_simulated_annealing, 'classe_resultado': ResultadoSimulatedAnnealing}
         }
 
     def executar_busca(self, nome_algoritmo, maze_obj, *args, **kwargs):

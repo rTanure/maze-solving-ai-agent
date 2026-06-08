@@ -19,7 +19,7 @@ def processar_um_labirinto(args_empacotados):
     for algorithm in missing_algorithms:
         # Filtros de segurança por tamanho do labirinto
         tamanho = maze.width * maze.length
-        if tamanho > 100000 and algorithm == "ONLINE_A*": continue
+        if tamanho > 120000 and algorithm == "ONLINE_A*": continue
         if tamanho > 250000 and algorithm == "DFS": continue
 
         print(f"[Core] Iniciando: {maze_id} -> {algorithm}")
